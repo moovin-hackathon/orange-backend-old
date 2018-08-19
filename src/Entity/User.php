@@ -200,7 +200,7 @@ class User extends AbstractEntity
      *
      * @return User
      */
-    public function setPassword(string $password)
+    public function setPassword($password)
     {
         $this->password = $password;
         return $this;
