@@ -1,0 +1,62 @@
+<?php
+
+namespace App\Entity;
+
+use Doctrine\ORM\EntityManager;
+use Doctrine\ORM\Mapping as ORM;
+
+/**
+ * Abstração das entidades.
+ *
+ * @author Thiago Hofmeister <thiago.souza@moovin.com.br>
+ */
+abstract class AbstractEntity
+{
+    /**
+     * @ORM\Id
+     * @ORM\Column(name="id", type="integer")
+     * @ORM\GeneratedValue(strategy="AUTO")
+     *
+     * @var int $id
+     */
+    protected $id;
+
+    /**
+     * Retorna a propriedade {@see AbstractEntity::$id}.
+     *
+     * @return int
+     */
+    public function getId(): int
+    {
+        return $this->id;
+    }
+
+    /**
+     * Define a propriedade {@see AbstractEntity::$id}.
+     *
+     * @param int $id
+     *
+     * @return AbstractEntity
+     */
+    public function setId($id)
+    {
+        $this->id = $id;
+        return $this;
+    }
+
+    /**
+     * Converte a entidade para um array esperado pelo documento.
+     *
+     * @return array
+     */
+    abstract public function toArray(): array;
+
+    /**
+     * Cria uma entidade a partir dos dados do documento.
+     *
+     * @param array $array
+     *
+     * @return static|AbstractEntity
+     */
+    abstract public static function fromArray(array $array);
+}
