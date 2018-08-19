@@ -58,6 +58,17 @@ class User extends AbstractEntity
     protected $password;
 
     /**
+     * @ORM\ManyToMany(targetEntity="Question", inversedBy="users")
+     * @ORM\JoinTable(name="histories",
+     *      joinColumns={@ORM\JoinColumn(name="userId", referencedColumnName="id")},
+     *      inverseJoinColumns={@ORM\JoinColumn(name="questionId", referencedColumnName="id")}
+     *      )
+     *
+     * @var Question[]
+     */
+    protected $questions;
+
+    /**
      * Retorna a propriedade {@see User::$name}.
      *
      * @return string
@@ -169,6 +180,43 @@ class User extends AbstractEntity
     public function setPhoto($photo)
     {
         $this->photo = $photo;
+        return $this;
+    }
+
+    /**
+     * Retorna a propriedade {@see User::$questions}.
+     *
+     * @return Question[]
+     */
+    public function getQuestions()
+    {
+        return $this->questions;
+    }
+
+    /**
+     * Define a propriedade {@see User::$questions}.
+     *
+     * @param Question $questions
+     *
+     * @return static|User
+     */
+    public function setQuestions($questions)
+    {
+        $this->questions = $questions;
+        $this->questions->addUser($this);
+        return $this;
+    }
+
+    /**
+     * Adiciona uma pergunta na propriedade $questions.
+     *
+     * @param Question $question
+     *
+     * @return $this
+     */
+    public function addQuestion(Question $question)
+    {
+        $this->questions[] = $question;
         return $this;
     }
 

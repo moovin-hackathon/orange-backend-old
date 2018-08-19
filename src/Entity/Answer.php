@@ -26,6 +26,14 @@ class Answer extends AbstractEntity
     protected $correct;
 
     /**
+     * @ORM\ManyToOne(targetEntity="Question", inversedBy="questions")
+     * @ORM\JoinColumn(name="question_id", referencedColumnName="id")
+     *
+     * @var Question $question
+     */
+    protected $question;
+
+    /**
      * Retorna a propriedade {@see Answer::$description}.
      *
      * @return string
@@ -68,6 +76,29 @@ class Answer extends AbstractEntity
     public function setCorrect($correct)
     {
         $this->correct = $correct;
+        return $this;
+    }
+
+    /**
+     * Retorna a propriedade {@see Answer::$question}.
+     *
+     * @return Question
+     */
+    public function getQuestion(): Question
+    {
+        return $this->question;
+    }
+
+    /**
+     * Define a propriedade {@see Answer::$question}.
+     *
+     * @param Question $question
+     *
+     * @return static|Answer
+     */
+    public function setQuestion(Question $question)
+    {
+        $this->question = $question;
         return $this;
     }
 

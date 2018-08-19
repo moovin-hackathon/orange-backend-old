@@ -13,16 +13,30 @@ class History extends AbstractEntity
      * @ORM\CurrentDate
      * @ORM\Column(type="date")
      *
-     * @var date $currentDate
+     * @var \DateTime $currentDate
      */
     protected $currentDate;
 
     /**
+     * @ORM\OneToMany(targetEntity="Question", mappedBy="questions")
+     *
+     * @var Question[] $questions
+     */
+    protected $questions;
+
+    /**
+     * @ORM\OneToMany(targetEntity="User", mappedBy="users")
+     *
+     * @var User[] $users
+     */
+    protected $users;
+
+    /**
      * Retorna a propriedade {@see History::$currentDate}.
      *
-     * @return date
+     * @return \DateTime
      */
-    public function getCurrentDate(): date
+    public function getCurrentDate(): \DateTime
     {
         return $this->currentDate;
     }
@@ -30,13 +44,59 @@ class History extends AbstractEntity
     /**
      * Define a propriedade {@see History::$currentDate}.
      *
-     * @param string $currentDate
+     * @param \DateTime $currentDate
      *
      * @return History
      */
-    public function setCurrentDate($currentDate)
+    public function setCurrentDate(\DateTime $currentDate)
     {
         $this->currentDate = $currentDate;
+        return $this;
+    }
+
+    /**
+     * Retorna a propriedade {@see History::$questions}.
+     *
+     * @return Question[]
+     */
+    public function getQuestions()
+    {
+        return $this->questions;
+    }
+
+    /**
+     * Define a propriedade {@see History::$questions}.
+     *
+     * @param Question[] $questions
+     *
+     * @return static|History
+     */
+    public function setQuestions($questions)
+    {
+        $this->questions = $questions;
+        return $this;
+    }
+
+    /**
+     * Retorna a propriedade {@see History::$users}.
+     *
+     * @return User[]
+     */
+    public function getUsers()
+    {
+        return $this->users;
+    }
+
+    /**
+     * Define a propriedade {@see History::$users}.
+     *
+     * @param User[] $users
+     *
+     * @return static|History
+     */
+    public function setUsers( $users)
+    {
+        $this->users = $users;
         return $this;
     }
 
