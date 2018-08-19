@@ -9,6 +9,36 @@ namespace App\Entity;
  */
 class Subject extends AbstractEntity
 {
+    /**
+     * @ORM\Name
+     * @ORM\Column(type="string" length="50")
+     *
+     * @var string $name
+     */
+    protected $name;
+
+    /**
+     * Retorna a propriedade {@see Subject::$name}.
+     *
+     * @return string
+     */
+    public function getName(): string
+    {
+        return $this->name;
+    }
+
+    /**
+     * Define a propriedade {@see Subject::$name}.
+     *
+     * @param string $name
+     *
+     * @return Subject
+     */
+    public function setName($name)
+    {
+        $this->name = $name;
+        return $this;
+    }
 
     /**
      * Converte a entidade para um array esperado pelo documento.

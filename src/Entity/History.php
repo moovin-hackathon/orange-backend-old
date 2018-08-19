@@ -9,6 +9,36 @@ namespace App\Entity;
  */
 class History extends AbstractEntity
 {
+    /**
+     * @ORM\CurrentDate
+     * @ORM\Column(type="date")
+     *
+     * @var date $currentDate
+     */
+    protected $currentDate;
+
+    /**
+     * Retorna a propriedade {@see History::$currentDate}.
+     *
+     * @return date
+     */
+    public function getCurrentDate(): date
+    {
+        return $this->currentDate;
+    }
+
+    /**
+     * Define a propriedade {@see History::$currentDate}.
+     *
+     * @param string $currentDate
+     *
+     * @return History
+     */
+    public function setCurrentDate($currentDate)
+    {
+        $this->currentDate = $currentDate;
+        return $this;
+    }
 
     /**
      * Converte a entidade para um array esperado pelo documento.
