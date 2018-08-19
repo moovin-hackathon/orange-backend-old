@@ -184,6 +184,29 @@ class User extends AbstractEntity
     }
 
     /**
+     * Retorna a propriedade {@see User::$password}.
+     *
+     * @return string
+     */
+    public function getPassword(): string
+    {
+        return $this->password;
+    }
+
+    /**
+     * Define a propriedade {@see User::$password}.
+     *
+     * @param string $password
+     *
+     * @return User
+     */
+    public function setPassword(string $password)
+    {
+        $this->password = $password;
+        return $this;
+    }
+
+    /**
      * Retorna a propriedade {@see User::$questions}.
      *
      * @return Question[]
@@ -196,7 +219,7 @@ class User extends AbstractEntity
     /**
      * Define a propriedade {@see User::$questions}.
      *
-     * @param Question $questions
+     * @param Question[] $questions
      *
      * @return static|User
      */
@@ -221,28 +244,45 @@ class User extends AbstractEntity
     }
 
     /**
-     * Converte a entidade para um array esperado pelo documento.
-     *
-     * @return array
+     * @inheritDoc
      */
     public function toArray(): array
     {
-        /**
-         * @todo Implement method toArray.
-         */
+        $questions = [];
+        foreach ($this->getQuestions() as $question) {
+
+            $questions[] = $question->toArray();
+        }
+
+        return [
+            'name' => $this->getName(),
+            'lastName' => $this->getLastName(),
+            'email' => $this->getEmail(),
+            'schooling' => $this->getSchooling(),
+            'photo' => $this->getPhoto(),
+            'password' => $this->getPassword(),
+            'questions' => $questions
+        ];
     }
 
     /**
-     * Cria uma entidade a partir dos dados do documento.
-     *
-     * @param array $array
-     *
-     * @return static|AbstractEntity
+     * @inheritDoc
      */
     public static function fromArray(array $array)
     {
-        /**
-         * @todo Implement method fromArray.
-         */
+        $questions = [];
+        foreach ($array['questions'] as $question) {
+
+            $questions = Question::fromArray($question);
+        }
+
+        return (new static)
+            ->setName($array['name'])
+            ->setLastName($array['lastName'])
+            ->setEmail($array['email'])
+            ->setSchooling($array['schooling'])
+            ->setPhoto($array['photo'])
+            ->setPassword($array['password'])
+            ->setQuestions($questions);
     }
 }

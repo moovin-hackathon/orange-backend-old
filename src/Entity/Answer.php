@@ -103,28 +103,25 @@ class Answer extends AbstractEntity
     }
 
     /**
-     * Converte a entidade para um array esperado pelo documento.
-     *
-     * @return array
+     * @inheritDoc
      */
     public function toArray(): array
     {
-        /**
-         * @todo Implement method toArray.
-         */
+        return [
+            'description' => $this->getDescription(),
+            'correct' => $this->isCorrect(),
+            'question' => $this->getQuestion()
+        ];
     }
 
     /**
-     * Cria uma entidade a partir dos dados do documento.
-     *
-     * @param array $array
-     *
-     * @return static|AbstractEntity
+     * @inheritDoc
      */
     public static function fromArray(array $array)
     {
-        /**
-         * @todo Implement method fromArray.
-         */
+        return (new static)
+            ->setDescription($array['description'])
+            ->setCorrect($array['correct'])
+            ->setQuestion($array['question']);
     }
 }

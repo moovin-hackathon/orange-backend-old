@@ -101,28 +101,49 @@ class History extends AbstractEntity
     }
 
     /**
-     * Converte a entidade para um array esperado pelo documento.
-     *
-     * @return array
+     * @inheritDoc
      */
     public function toArray(): array
     {
-        /**
-         * @todo Implement method toArray.
-         */
+        $questions = [];
+        foreach ($this->getQuestions() as $question) {
+
+            $questions[] = $question->toArray();
+        }
+
+        $users = [];
+        foreach ($this->getUsers() as $user) {
+
+            $users[] = $user->toArray();
+        }
+
+        return [
+            'currentDate' => $this->getCurrentDate(),
+            'questions' => $questions,
+            'users' => $users
+        ];
     }
 
     /**
-     * Cria uma entidade a partir dos dados do documento.
-     *
-     * @param array $array
-     *
-     * @return static|AbstractEntity
+     * @inheritDoc
      */
     public static function fromArray(array $array)
     {
-        /**
-         * @todo Implement method fromArray.
-         */
+        $questions = [];
+        foreach ($array['questions'] as $question) {
+
+            $questions[] = Question::fromArray($question);
+        }
+
+        $users = [];
+        foreach ($array['users'] as $user) {
+
+            $users[] = User::fromArray($user);
+        }
+
+        return (new static)
+            ->setCurrentDate($array['currentDate'])
+            ->setQuestions($questions)
+            ->setUsers($users);
     }
 }

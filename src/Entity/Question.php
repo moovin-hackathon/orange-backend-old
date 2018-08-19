@@ -18,6 +18,14 @@ class Question extends AbstractEntity
     protected $description;
 
     /**
+     * @ORM\Year
+     * @ORM\Column(type="string" length="10")
+     *
+     * @var string $year
+     */
+    protected $year;
+
+    /**
      * @ORM\ManyToOne(targetEntity="Subject")
      * @ORM\JoinColumn(name="subjectId", referencedColumnName="id")
      *
@@ -39,7 +47,7 @@ class Question extends AbstractEntity
      *      inverseJoinColumns={@ORM\JoinColumn(name="userId", referencedColumnName="id")}
      *      )
      *
-     * @var User $users
+     * @var User[] $users
      */
     protected $users;
 
@@ -63,6 +71,29 @@ class Question extends AbstractEntity
     public function setDescription($description)
     {
         $this->description = $description;
+        return $this;
+    }
+
+    /**
+     * Retorna a propriedade {@see Question::$year}.
+     *
+     * @return string
+     */
+    public function getYear(): string
+    {
+        return $this->year;
+    }
+
+    /**
+     * Define a propriedade {@see Question::$year}.
+     *
+     * @param string $year
+     *
+     * @return Question
+     */
+    public function setYear(string $year)
+    {
+        $this->year = $year;
         return $this;
     }
 
@@ -115,9 +146,9 @@ class Question extends AbstractEntity
     /**
      * Retorna a propriedade {@see Question::$users}.
      *
-     * @return User
+     * @return User[]
      */
-    public function getUsers(): User
+    public function getUsers()
     {
         return $this->users;
     }
@@ -125,11 +156,11 @@ class Question extends AbstractEntity
     /**
      * Define a propriedade {@see Question::$users}.
      *
-     * @param User $users
+     * @param User[] $users
      *
      * @return static|Question
      */
-    public function setUsers(User $users)
+    public function setUsers($users)
     {
         $this->users = $users;
         $this->users->addQuestion($this);
@@ -150,28 +181,51 @@ class Question extends AbstractEntity
     }
 
     /**
-     * Converte a entidade para um array esperado pelo documento.
-     *
-     * @return array
+     * @inheritDoc
      */
     public function toArray(): array
     {
-        /**
-         * @todo Implement method toArray.
-         */
+        $answers = [];
+        foreach ($this->getAnswers() as $answer) {
+
+            $answers[] = $answer->toArray();
+        }
+
+        $users = [];
+        foreach ($this->getUsers() as $user) {
+
+            $users[] = $user->toArray();
+        }
+
+        return [
+            'description' => $this->getDescription(),
+            'subject' => $this->getSubject(),
+            'answers' => $answers,
+            'users' => $users
+        ];
     }
 
     /**
-     * Cria uma entidade a partir dos dados do documento.
-     *
-     * @param array $array
-     *
-     * @return static|AbstractEntity
+     * @inheritDoc
      */
     public static function fromArray(array $array)
     {
-        /**
-         * @todo Implement method fromArray.
-         */
+        $answers = [];
+        foreach ($array['answers'] as $answer) {
+
+            $answers[] = Answer::fromArray($answer);
+        }
+
+        $users = [];
+        foreach ($array['users'] as $user) {
+
+            $users[] = User::fromArray($user);
+        }
+
+        return (new static)
+            ->setDescription($array['description'])
+            ->setSubject($array['subject'])
+            ->setAnswers($answers)
+            ->setUsers($users);
     }
 }

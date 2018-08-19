@@ -41,28 +41,21 @@ class Subject extends AbstractEntity
     }
 
     /**
-     * Converte a entidade para um array esperado pelo documento.
-     *
-     * @return array
+     * @inheritDoc
      */
     public function toArray(): array
     {
-        /**
-         * @todo Implement method toArray.
-         */
+        return [
+            'name' => $this->getName()
+        ];
     }
 
     /**
-     * Cria uma entidade a partir dos dados do documento.
-     *
-     * @param array $array
-     *
-     * @return static|AbstractEntity
+     * @inheritDoc
      */
     public static function fromArray(array $array)
     {
-        /**
-         * @todo Implement method fromArray.
-         */
+        return (new static)
+            ->setName($array['name']);
     }
 }
